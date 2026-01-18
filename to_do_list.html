@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creative To-Do App</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#667eea,#764ba2,#ff758c);
+}
+
+.app{
+  width:360px;
+  background:rgba(255,255,255,0.15);
+  backdrop-filter:blur(14px);
+  border-radius:25px;
+  padding:25px;
+  color:white;
+  box-shadow:0 0 30px rgba(0,0,0,0.3);
+}
+
+h1{
+  text-align:center;
+  margin-bottom:15px;
+  letter-spacing:2px;
+}
+
+.input-box input{
+  width:100%;
+  margin:6px 0;
+  padding:10px;
+  border:none;
+  border-radius:12px;
+  outline:none;
+}
+
+.add-btn{
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:20px;
+  background:linear-gradient(135deg,#00f260,#0575e6);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:5px;
+}
+
+.add-btn:hover{
+  transform:scale(1.05);
+}
+
+ul{
+  list-style:none;
+  margin-top:15px;
+  max-height:300px;
+  overflow-y:auto;
+}
+
+li{
+  background:rgba(255,255,255,0.15);
+  margin:8px 0;
+  padding:10px;
+  border-radius:12px;
+  display:flex;
+  flex-direction:column;
+}
+
+li.completed{
+  opacity:0.6;
+  text-decoration:line-through;
+}
+
+.task-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.task-buttons button{
+  border:none;
+  border-radius:50%;
+  padding:5px 8px;
+  margin-left:5px;
+  cursor:pointer;
+}
+
+.done{background:#00f260;}
+.edit{background:#ffd200;}
+.delete{background:#ff512f;color:white;}
+
+small{
+  opacity:0.8;
+  margin-top:4px;
+}
+
+footer{
+  text-align:center;
+  margin-top:15px;
+  font-size:13px;
+  opacity:0.8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+  <h1>📝 My To-Do List</h1>
+
+  <div class="input-box">
+    <input type="text" id="task" placeholder="Enter your task">
+    <input type="date" id="date">
+    <input type="time" id="time">
+    <button class="add-btn" onclick="addTask()">Add Task</button>
+  </div>
+
+  <ul id="list"></ul>
+
+  <footer>Moments planned. Goals achieved.</footer>
+</div>
+
+<script>
+function addTask(){
+  let task = document.getElementById("task").value;
+  let date = document.getElementById("date").value;
+  let time = document.getElementById("time").value;
+
+  if(task === ""){
+    alert("Please enter a task");
+    return;
+  }
+
+  let li = document.createElement("li");
+
+  li.innerHTML = `
+    <div class="task-top">
+      <span>${task}</span>
+      <div class="task-buttons">
+        <button class="done" onclick="completeTask(this)">✔</button>
+        <button class="edit" onclick="editTask(this)">✎</button>
+        <button class="delete" onclick="deleteTask(this)">✖</button>
+      </div>
+    </div>
+    <small>📅 ${date || "No date"} ⏰ ${time || "No time"}</small>
+  `;
+
+  document.getElementById("list").appendChild(li);
+
+  document.getElementById("task").value="";
+  document.getElementById("date").value="";
+  document.getElementById("time").value="";
+}
+
+function completeTask(btn){
+  btn.closest("li").classList.toggle("completed");
+}
+
+function deleteTask(btn){
+  btn.closest("li").remove();
+}
+
+function editTask(btn){
+  let li = btn.closest("li");
+  let text = li.querySelector("span");
+  let newTask = prompt("Edit task:", text.innerText);
+  if(newTask !== null && newTask !== ""){
+    text.innerText = newTask;
+  }
+}
+</script>
+
+</body>
+</html>
